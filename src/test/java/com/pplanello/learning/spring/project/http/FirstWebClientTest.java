@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.MatchType;
+import org.mockserver.model.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
@@ -32,7 +33,6 @@ class FirstWebClientTest {
                 .isNotNull();
     }
 
-
     @Test
     void it_should_return_expected_response() {
         setupResponseClient(PATH_POST_TEST, "POST", 200, RESPONSE_OK);
@@ -41,6 +41,37 @@ class FirstWebClientTest {
                 .as("It should return expected response")
                 .expectNext(RESPONSE_OK)
                 .verifyComplete();
+    }
+
+    @Test
+    void it_should_return_error_when_have_one_error_in_client() {
+        setupResponseClient(PATH_POST_TEST, "POST", 500, RESPONSE_ERROR);
+
+        StepVerifier.create(firstWebClient.sendPost(ALGORITHM, LABEL, request))
+                .as("It should return error")
+                .verifyError(FirstClientException.class);
+    }
+
+    @Test
+    void it_should_return_expected_exception_when_have_one_error_in_client() {
+        setupResponseClient(PATH_POST_TEST, "POST", 500, RESPONSE_ERROR);
+
+        StepVerifier.create(firstWebClient.sendPost(ALGORITHM, LABEL, request))
+                .as("It should return expected error response")
+                .verifyErrorMessage(RESPONSE_ERROR_500);
+    }
+
+    @Test
+    void it_should_return_expected_error_code_when_have_one_error_in_client() {
+        setupResponseClient(PATH_POST_TEST, "POST", 500, RESPONSE_ERROR);
+
+        StepVerifier.create(firstWebClient.sendPost(ALGORITHM, LABEL, request))
+                .as("It should return expected error response")
+                .verifyErrorSatisfies(error ->
+                        assertThat(((FirstClientException) error).getHttpStatusCode())
+                                .as("It should return error 500")
+                                .isEqualTo("500")
+                );
     }
 
     @BeforeEach
@@ -63,6 +94,7 @@ class FirstWebClientTest {
                         .withBody(json(request, MatchType.ONLY_MATCHING_FIELDS)))
                 .respond(response()
                         .withStatusCode(statusCode)
+                        .withContentType(MediaType.APPLICATION_JSON)
                         .withBody(mapToJsonString(body)));
     }
 
@@ -86,4 +118,6 @@ class FirstWebClientTest {
     private static final String LABEL = "label";
     private static final String PATH_POST_TEST = "/api/" + ALGORITHM + "/" + LABEL + "/test";
     private static final Map<String, Object> RESPONSE_OK = Map.of("response", "ok");
+    private static final Map<String, Object> RESPONSE_ERROR = Map.of("response", "ko");
+    private static final String RESPONSE_ERROR_500 = "500-{\"response\":\"ko\"}";
 }
