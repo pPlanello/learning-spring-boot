@@ -11,4 +11,5 @@ It is a project to learn and practice spring boot. This project is based on appl
 ## Structure Project
 | **Package**   | **Description**                |
 | :--------: | :-------------------------: |
-| kafka     | To learn and practice kafka consumer and producer |
+| client     | To learn and practice reactive web client to call external services |
+| kafka     | To learn and practice reactive kafka consumer and producer |
