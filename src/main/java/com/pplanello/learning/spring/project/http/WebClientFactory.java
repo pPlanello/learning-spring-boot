@@ -2,8 +2,8 @@ package com.pplanello.learning.spring.project.http;
 
 
 import io.netty.channel.ChannelOption;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
@@ -11,7 +11,7 @@ import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
 
-@Component
+@Configurable
 public class WebClientFactory {
 
     public WebClient create() {

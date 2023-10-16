@@ -11,7 +11,7 @@ import reactor.netty.http.HttpProtocol;
 public class WebClientConfiguration {
 
     @Bean("first-web-client")
-    public WebClient firstWebClient(@Value("${FIRST_WEB_CLIENT}") String host,
+    public WebClient firstWebClient(@Value("${first_web_client}") String host,
                                     @Autowired WebClient.Builder webClientBuilder) {
         var webClientFactory = new WebClientFactory(webClientBuilder,
                 host,
@@ -21,7 +21,7 @@ public class WebClientConfiguration {
     }
 
     @Bean("second-web-client")
-    public WebClient secondWebClient(@Value("${FIRST_WEB_CLIENT:localhost}") String host,
+    public WebClient secondWebClient(@Value("${second_web_client}") String host,
                                      @Autowired WebClient.Builder webClientBuilder) {
         var webClientFactory = new WebClientFactory(webClientBuilder,
                 host,
