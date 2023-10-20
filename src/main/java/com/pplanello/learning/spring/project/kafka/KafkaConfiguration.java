@@ -1,6 +1,7 @@
 package com.pplanello.learning.spring.project.kafka;
 
-import com.fasterxml.jackson.databind.deser.std.MapDeserializer;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,16 +25,18 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
 public class KafkaConfiguration {
 
     @Bean("consumerTopicName")
-    public ReactiveKafkaConsumerTemplate<Integer, Map<String, Object>> kafkaConsumerTemplate(
-        @Qualifier("kafkaConsumerOptions") ReceiverOptions<Integer, Map<String, Object>> kafkaConsumerOptions
+    public ReactiveKafkaConsumerTemplate<Integer, byte[]> kafkaConsumerTemplate(
+        @Qualifier("kafkaConsumerOptions") ReceiverOptions<Integer, byte[]> kafkaConsumerOptions
     ) {
         return new ReactiveKafkaConsumerTemplate<>(kafkaConsumerOptions);
     }
 
     @Bean("kafkaConsumerOptions")
-    public ReceiverOptions<Integer, Map<String, Object>> kafkaConsumerOptions() {
-        var basicReceiverOptions = ReceiverOptions.<Integer, Map<String, Object>>
-            create(getConsumerOptions());
+    public ReceiverOptions<Integer, byte[]> kafkaConsumerOptions() {
+        var basicReceiverOptions = ReceiverOptions.<Integer, byte[]>
+            create(getConsumerOptions())
+                .withKeyDeserializer(new IntegerDeserializer())
+                .withValueDeserializer(new ByteArrayDeserializer());
 
         return basicReceiverOptions
             .subscription(this.topicName.getPattern());
@@ -45,11 +48,9 @@ public class KafkaConfiguration {
         consumerProps.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBrokerConnection);
         consumerProps.put(GROUP_ID_CONFIG, topicName.getName().concat("-communications"));
         consumerProps.put(CLIENT_ID_CONFIG, topicName.getName().concat("-communications"));
-        consumerProps.put(KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
-        consumerProps.put(VALUE_DESERIALIZER_CLASS_CONFIG, MapDeserializer.class);
         consumerProps.put(AUTO_OFFSET_RESET_CONFIG, "earliest");
-        consumerProps.put(MAX_POLL_INTERVAL_MS_CONFIG, MINUTES.toMillis(7));
-        consumerProps.put(METADATA_MAX_AGE_CONFIG, SECONDS.toMillis(10));
+        consumerProps.put(MAX_POLL_INTERVAL_MS_CONFIG, (int) MINUTES.toMillis(7));
+        consumerProps.put(METADATA_MAX_AGE_CONFIG, (int) SECONDS.toMillis(10));
         consumerProps.put(ALLOW_AUTO_CREATE_TOPICS_CONFIG, autoCreateTopic);
 
         return consumerProps;
