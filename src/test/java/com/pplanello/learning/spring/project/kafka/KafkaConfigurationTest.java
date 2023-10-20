@@ -11,6 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.regex.Pattern;
 
+import static java.lang.Boolean.FALSE;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -20,43 +23,71 @@ class KafkaConfigurationTest {
     @Test
     void it_should_have_enable_auto_commit_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the enable auto commit configuration")
-                .containsEntry("enable.auto.commit", "false");
+            .as("It should have the enable auto commit configuration")
+            .containsEntry("enable.auto.commit", "false");
     }
 
     @Test
     void it_should_have_bootstrap_servers_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the bootstrap servers configuration")
-                .containsEntry("bootstrap.servers", KAFKA_BROKER_CONNECTION);
+            .as("It should have the bootstrap servers configuration")
+            .containsEntry("bootstrap.servers", KAFKA_BROKER_CONNECTION);
     }
 
     @Test
     void it_should_have_group_id_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the group id configuration")
-                .containsEntry("group.id", TOPIC_NAME_CONSUMER);
+            .as("It should have the group id configuration")
+            .containsEntry("group.id", TOPIC_NAME_CONSUMER);
     }
 
     @Test
     void it_should_have_client_id_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the client id configuration")
-                .containsEntry("client.id", TOPIC_NAME_CONSUMER);
+            .as("It should have the client id configuration")
+            .containsEntry("client.id", TOPIC_NAME_CONSUMER);
     }
 
     @Test
     void it_should_have_key_deserializer_class_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the key deserializer class configuration")
-                .containsEntry("key.deserializer", IntegerDeserializer.class);
+            .as("It should have the key deserializer class configuration")
+            .containsEntry("key.deserializer", IntegerDeserializer.class);
     }
 
     @Test
     void it_should_have_value_deserializer_class_configuration() {
         assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
-                .as("It should have the value deserializer class configuration")
-                .containsEntry("value.deserializer", MapDeserializer.class);
+            .as("It should have the value deserializer class configuration")
+            .containsEntry("value.deserializer", MapDeserializer.class);
+    }
+
+    @Test
+    void it_should_have_auto_offset_reset_class_configuration() {
+        assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
+            .as("It should have the auto offset reset class configuration")
+            .containsEntry("auto.offset.reset", "earliest");
+    }
+
+    @Test
+    void it_should_have_max_poll_interval_ms_class_configuration() {
+        assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
+            .as("It should have the max poll interval ms class configuration")
+            .containsEntry("max.poll.interval.ms", MINUTES.toMillis(7));
+    }
+
+    @Test
+    void it_should_have_metadata_max_age_ms_class_configuration() {
+        assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
+            .as("It should have the metadata max age ms class configuration")
+            .containsEntry("metadata.max.age.ms", SECONDS.toMillis(10));
+    }
+
+    @Test
+    void it_should_have_allow_auto_create_topics_class_configuration() {
+        assertThat(kafkaConfiguration.kafkaReceiverOptions().consumerProperties())
+            .as("It should have the value deserializer class configuration")
+            .containsEntry("allow.auto.create.topics", FALSE);
     }
 
     @BeforeEach
