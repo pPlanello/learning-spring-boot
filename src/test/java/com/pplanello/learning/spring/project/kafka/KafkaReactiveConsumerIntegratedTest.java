@@ -7,7 +7,6 @@ import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -67,8 +66,6 @@ class KafkaReactiveConsumerIntegratedTest {
 
     private Producer<Integer, byte[]> producer;
     private static final Map<String, Object> KAFKA_CONFIGURATION = Map.of(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, "localhost:9093");
-    @Mock
-    private Map<String, Object> payloadDecrypt;
-    @Mock
-    private byte[] payloadEncrypt;
+    private Map<String, Object> payloadDecrypt = Map.of("Prueba", "PRueba");
+    private byte[] payloadEncrypt = "Prueba".getBytes();
 }

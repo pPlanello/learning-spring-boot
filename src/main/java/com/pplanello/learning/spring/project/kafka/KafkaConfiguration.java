@@ -1,5 +1,7 @@
 package com.pplanello.learning.spring.project.kafka;
 
+import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import reactor.kafka.receiver.ReceiverOptions;
 
@@ -16,8 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Boolean.FALSE;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.*;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
 
 @EnableKafka
@@ -40,6 +42,15 @@ public class KafkaConfiguration {
 
         return basicReceiverOptions
             .subscription(this.topicName.getPattern());
+    }
+
+    @Bean
+    public NewTopic createTopicName() {
+        return TopicBuilder.name(topicName.getName())
+                .replicas(3)
+                .partitions(40)
+                .config(TopicConfig.RETENTION_MS_CONFIG, Long.toString(HOURS.toMillis(24)))
+                .build();
     }
 
     private Map<String, Object> getConsumerOptions() {
