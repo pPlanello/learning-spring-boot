@@ -106,7 +106,7 @@ public class CipherService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        keyGenerator.init(ALGORITHM_SIZE);
+        keyGenerator.init(KEY_SIZE);
         return keyGenerator.generateKey();
     }
 
@@ -127,6 +127,6 @@ public class CipherService {
     private final SecretKey secretKey;
     private final IvParameterSpec ivParameterSpec;
     private static final String ALGORITHM = "AES";
-    private static final String ALGORITHM_DESCRIPTION = ALGORITHM + "/CBC/NoPadding";
-    private static final Integer ALGORITHM_SIZE = 256;
+    private static final String ALGORITHM_DESCRIPTION = ALGORITHM + "/CBC/PKCS5Padding";
+    private static final Integer KEY_SIZE = 256;
 }
