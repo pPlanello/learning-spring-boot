@@ -24,6 +24,7 @@
         <spring-boot.version>3.1.4</spring-boot.version>
         <spring-kafka.version>3.0.11</spring-kafka.version>
         <spring-reactor-kafka.version>1.3.21</spring-reactor-kafka.version>
+        <awaitility.version>4.2.0</awaitility.version>
     </properties>
 
     <dependencies>
@@ -60,7 +61,6 @@
             <artifactId>mockserver-netty</artifactId>
             <version>${mock-server-netty.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -69,6 +69,12 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
