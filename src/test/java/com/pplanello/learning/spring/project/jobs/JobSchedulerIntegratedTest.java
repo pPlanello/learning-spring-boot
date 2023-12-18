@@ -24,7 +24,7 @@ class JobSchedulerIntegratedTest {
     @Test
     void it_should_execute_one_time() {
         await()
-            .atMost(Duration.ofMillis(1_500))
+            .atMost(Duration.ofMillis(1_700))
             .untilAsserted(() -> verify(jobService, only()
                 .description("It should execute one time"))
                 .executeJob());

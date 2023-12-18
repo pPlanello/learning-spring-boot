@@ -1,6 +1,6 @@
 package com.pplanello.learning.spring.project.kafka;
 
-import com.fasterxml.jackson.databind.deser.std.MapDeserializer;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,16 +50,16 @@ class KafkaConfigurationTest {
 
     @Test
     void it_should_have_key_deserializer_class_configuration() {
-        assertThat(kafkaConfiguration.kafkaConsumerOptions().consumerProperties())
+        assertThat(kafkaConfiguration.kafkaConsumerOptions().keyDeserializer().getClass())
             .as("It should have the key deserializer class configuration")
-            .containsEntry("key.deserializer", IntegerDeserializer.class);
+            .isEqualTo(IntegerDeserializer.class);
     }
 
     @Test
     void it_should_have_value_deserializer_class_configuration() {
-        assertThat(kafkaConfiguration.kafkaConsumerOptions().consumerProperties())
+        assertThat(kafkaConfiguration.kafkaConsumerOptions().valueDeserializer().getClass())
             .as("It should have the value deserializer class configuration")
-            .containsEntry("value.deserializer", MapDeserializer.class);
+            .isEqualTo(ByteArrayDeserializer.class);
     }
 
     @Test
@@ -73,14 +73,14 @@ class KafkaConfigurationTest {
     void it_should_have_max_poll_interval_ms_class_configuration() {
         assertThat(kafkaConfiguration.kafkaConsumerOptions().consumerProperties())
             .as("It should have the max poll interval ms class configuration")
-            .containsEntry("max.poll.interval.ms", MINUTES.toMillis(7));
+            .containsEntry("max.poll.interval.ms", (int) MINUTES.toMillis(7));
     }
 
     @Test
     void it_should_have_metadata_max_age_ms_class_configuration() {
         assertThat(kafkaConfiguration.kafkaConsumerOptions().consumerProperties())
             .as("It should have the metadata max age ms class configuration")
-            .containsEntry("metadata.max.age.ms", SECONDS.toMillis(10));
+            .containsEntry("metadata.max.age.ms", (int) SECONDS.toMillis(10));
     }
 
     @Test
