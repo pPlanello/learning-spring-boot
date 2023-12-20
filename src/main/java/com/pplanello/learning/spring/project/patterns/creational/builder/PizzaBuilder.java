@@ -1,5 +1,7 @@
 package com.pplanello.learning.spring.project.patterns.creational.builder;
 
+import java.time.Duration;
+
 /**
  * Builder is a creational design pattern that lets you construct complex objects step by step.
  * The pattern allows you to produce different types and representations of an object using the
@@ -13,6 +15,11 @@ public class PizzaBuilder {
 
     public PizzaBuilder with(String ingredient) {
         pizza.addIngredient(ingredient);
+        return this;
+    }
+
+    public PizzaBuilder timeToMake(Duration duration) {
+        pizza.setTimeToMake(duration);
         return this;
     }
 
