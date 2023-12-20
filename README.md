@@ -14,4 +14,5 @@ the tests have been developed and then the implementation of the same.
 |   client    | To learn and practice reactive web client to call external services |
 |    kafka    |     To learn and practice reactive kafka consumer and producer      |
 |    jobs     |             To learn and practice spring jobs scheduled             |
+|  patterns   |                To learn and practice pattern designs                |
 |    rest     |          To learn and practice spring controller rest api           |
