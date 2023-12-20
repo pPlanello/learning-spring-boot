@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +21,7 @@ class UsersControllerTest {
     @Test
     void it_should_return_not_null() {
         when(usersService.getAllUsers()).thenReturn(Mono.just(LIST_USERS));
-        
+
         assertThat(usersController.getAllUsers())
             .as("It should return not null")
             .isNotNull();
@@ -44,7 +45,7 @@ class UsersControllerTest {
 
         StepVerifier.create(usersController.getAllUsers())
             .as("It should return expected list of users service to get all users")
-            .expectNext(ResponseEntity.ok(LIST_USERS))
+            .expectNext(ResponseEntity.ok(Map.of("users", LIST_USERS)))
             .verifyComplete();
     }
 
@@ -65,6 +66,6 @@ class UsersControllerTest {
     private UsersController usersController;
     @Mock
     private UsersService usersService;
-
-    private static final Map<String, Object> LIST_USERS = Map.of();
+    @Mock
+    private List<Map<String, Object>> LIST_USERS;
 }
