@@ -5,8 +5,6 @@ import reactor.test.StepVerifier;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 class CipherServiceTest {
 
     @Test
@@ -16,8 +14,9 @@ class CipherServiceTest {
         System.out.println("encrypt = " + encrypt.block());
 
         StepVerifier.create(encrypt.flatMap(cipherService::decrypt))
-                .assertNext(result -> assertEquals(MESSAGE, result))
-                .verifyComplete();
+            .as("It should encrypt and decrypt same message")
+            .expectNext(MESSAGE)
+            .verifyComplete();
     }
 
     private final CipherService cipherService = new CipherService();
