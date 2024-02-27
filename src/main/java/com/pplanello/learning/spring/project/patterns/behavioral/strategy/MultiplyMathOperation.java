@@ -1,5 +1,8 @@
 package com.pplanello.learning.spring.project.patterns.behavioral.strategy;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MultiplyMathOperation implements MathStrategy {
 
     @Override

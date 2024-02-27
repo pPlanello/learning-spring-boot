@@ -13,7 +13,7 @@
     <groupId>com.pplanello</groupId>
     <artifactId>learning.spring.project</artifactId>
 
-    <version>0.3.2-SNAPSHOT</version>
+    <version>0.3.3-SNAPSHOT</version>
 
     <name>Learning Spring Project</name>
     <description>It is a project to learn and practice spring boot</description>
