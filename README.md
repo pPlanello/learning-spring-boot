@@ -15,4 +15,5 @@ the tests have been developed and then the implementation of the same.
 |    kafka    |     To learn and practice reactive kafka consumer and producer      |
 |    jobs     |             To learn and practice spring jobs scheduled             |
 |  patterns   |                To learn and practice pattern designs                |
+|   reactor   |           To learn and practice reactor project in spring           |
 |    rest     |          To learn and practice spring controller rest api           |
